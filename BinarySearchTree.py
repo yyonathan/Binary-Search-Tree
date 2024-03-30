@@ -78,26 +78,54 @@ def find_sum(root_node):
     return root_node.val + find_sum(root_node.left) \
                         + find_sum(root_node.right)
 
-# Function to delete a node from the Binary Tree
-def delete_node(root, item):
-    if root is None:
-        return root
-    if root.val > item:
-        root.left = delete_node(root.left, item)
-    elif root.val < item:
-        root.right = delete_node(root.right, item)
-    else:
-        if not root.right:
-            return root.left
-        if not root.left:
-            return root.right
-            temp = root.right
-            min = temp.val
-            while temp.left:
-                temp = temp.left
-                min = temp.val
-            root.right = delete_node(right.right,root.val)
-        return root
+#Function to delete the deepest node in  binary tree
+def deleteDeepest(root, d_node):
+    q = []
+    q.append(root)
+    while(len(q)):
+        temp = q.pop(0)
+        if temp is d_node:
+            temp = None
+            return
+        if temp.right:
+            if temp.right is d_node:
+                temp.right = None
+                return
+            else:
+                q.append(temp.right)
+        if temp.left:
+            if temp.left is d_node:
+                temp.left = None
+                return
+            else:
+                q.append(temp.left)
+
+# Function to delete element from the Binary Tree
+def delete_node(root, key):
+    if root == None:
+        return None
+    if root.left == None and root.right == None:
+        if root.key == key:
+            return None
+        else:
+            return root
+    key_node = None
+    q = []
+    q.append(root)
+    temp = None
+    while(len(q)):
+        temp = q.pop(0)
+        if temp.data == key:
+            key_node = temp
+        if temp.left:
+            q.append(temp.left)
+        if temp.right:
+            q.append(temp.right)
+    if key_node:
+        x = temp.data
+        key_node.data = x
+        deleteDeepest(root, temp)
+    return root
 
 #Loop to input numbers into the binary tree
 y = Node(70)

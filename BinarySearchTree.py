@@ -5,6 +5,21 @@ class Node:
         self.right = None
         self.val = key
 
+#In-Order
+def inorder(root):
+    if root:
+        inorder(root.left)
+        print(" ", root.val, end='')
+        inorder(root.right)
+
+#Post-Order
+def postorder(root):
+    if root:
+        postorder(root.left)
+        postorder(root.right)
+        print(" ",root.val, end = '')
+
+
 #Returns Largest Elements
 def insert(root, key):
     if root is None:
@@ -45,4 +60,5 @@ while True:
     r = insert(r,num)
 
 print("\n\tLargest Element")
+
 

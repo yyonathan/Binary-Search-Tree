@@ -5,6 +5,57 @@ class Node:
         self.right = None
         self.val = key
 
+# Function to insert into the tree
+def insert(root, key):
+    if root is None:
+        return Node(key)
+    else:
+        if root.val == key:
+            return root
+        elif root.val < key:
+            root.right = insert(root.right, key)
+        else:
+            root.left = insert(root.left, key)
+    return root
+
+# Function to delete Item in the BST
+def delete_node(key, num):
+    if key is None:
+        return num
+    if key.val > num:
+        key.left = delete_node(key.left,num)
+        return key
+    elif key.val < num:
+        key.right = delete_node(key.right,num)
+        return key
+    
+    if key.left is None:
+        temp = key.right
+        del key
+        return temp
+    elif key.right is None:
+        temp = key.left
+        del key
+        return temp
+    else:
+        parent = key
+
+        succ = key.right
+        while succ.left is not None:
+            parent = succ
+            succ = succ.left
+
+        if parent != key:
+            parent.left = succ.right
+        else:
+            parent.right = succ.right
+        
+        key.key = succ.key
+
+        del succ
+        return key
+
+
 # Will print inorder
 def inorder(root):
     if root:
@@ -18,19 +69,6 @@ def postorder(root):
         postorder(root.left)
         postorder(root.right)
         print(" ",root.val, end = '')
-
-# Function to insert into the tree
-def insert(root, key):
-    if root is None:
-        return Node(key)
-    else:
-        if root.val == key:
-            return root
-        elif root.val < key:
-            root.right = insert(root.right, key)
-        else:
-            root.left = insert(root.left, key)
-    return root
 
 # Find the smallest in the tree
 def find_smallest(root_node):
@@ -79,86 +117,61 @@ def find_sum(root_node):
                         + find_sum(root_node.right)
 
 #Function to delete the deepest node in  binary tree
-def deleteDeepest(root, d_node):
-    q = []
-    q.append(root)
-    while(len(q)):
-        temp = q.pop(0)
-        if temp is d_node:
-            temp = None
-            return
-        if temp.right:
-            if temp.right is d_node:
-                temp.right = None
-                return
-            else:
-                q.append(temp.right)
-        if temp.left:
-            if temp.left is d_node:
-                temp.left = None
-                return
-            else:
-                q.append(temp.left)
-
-# Function to delete element from the Binary Tree
-def delete_node(root, key):
-    if root == None:
-        return None
-    if root.left == None and root.right == None:
-        if root.key == key:
-            return None
-        else:
-            return root
-    key_node = None
-    q = []
-    q.append(root)
-    temp = None
-    while(len(q)):
-        temp = q.pop(0)
-        if temp.data == key:
-            key_node = temp
-        if temp.left:
-            q.append(temp.left)
-        if temp.right:
-            q.append(temp.right)
-    if key_node:
-        x = temp.data
-        key_node.data = x
-        deleteDeepest(root, temp)
-    return root
 
 #Loop to input numbers into the binary tree
 y = Node(70)
 while True:
-    num = int(input("\n\tEnter an Integer e.g 25 ===>"))
+    num = int(input("\n\tEnter an Integer to add to BST e.g 25 ===> "))
     if num == 0:
         break
     y = insert(y,num)
 
-#Initial print of tree before user wants to erase anything
-print("\n\tInorder Traversal: ", end = '')
-inorder(y)
-print("\n\tPostorder Traversal: ", end = '')
-postorder(y)
+answer = 10
+print()
+for x in range(60):
+    print("-", end = '')
 
-#Loop that will continue as long as the user wants to keep deleting numbers from tree
-print("\n\tWould you like to delete a node? 1 = Yes, 0 = No  ===>", end = '')
-answer = int(input())
-while answer == 1:
-    print("\n\tEnter the Number you would like to delete: ", end ='')
-    userNum = int(input())
-    delete_node(y,userNum)
-    print("\n\tWould you like to delete another Node? 1 = Yes , 0 = No ===>", end = ' ')
-    answer = int(input())
+while answer != 7:
+    print("\n\n\tSelect from any of these options:",
+        "\n\n\t1:   Print BST in PostOrder",
+        "\n\t2:   Print Largest Item in BST",
+        "\n\t3:   Print Smallest Item in BST",
+        "\n\t4:   Print a list of Prime numbers in the BST",
+        "\n\t5:   Print the Sum of all Items in the BST",
+        "\n\t6:   Delete an item from the BST",
+        "\n\t7:   End Program")
+    answer = int(input("\n\t\tEnter Number ===> "))
+    for x in range(60):
+        print("-", end = '')
+    print()
+    if answer == 1:
+        print("\n\t\tPostorder Traversal: ", end = '')
+        postorder(y)
+    elif answer == 2:
+        print("\n\t\tLargest Element: ", find_largest(y))
+    elif answer == 3:
+        print("\n\t\tSmallest Element: ", find_smallest(y))
+    elif answer == 4:
+        print("\n\t\tPrime Numbers:", end = '')
+        primeinTree(y)
+    elif answer == 5:
+        print("\n\t\tSum of all Items:", end = '')
+        find_sum(y)
+    elif answer == 6:
+        print("\n\t\tWhich item would you like to delete from the BST?  ===> ", end='')
+        userNum = int(input())
+        delete_node(y,userNum)
+    print()
+    for x in range(2):
+        print()
+        for j in range(60):
+            print("-", end = '')
+    
 
-print("\n\tInorder Traversal: ", end = '')
-inorder(y)
-print("\n\tPostorder Traversal: ", end = '')
-postorder(y)
-print("\n\tLargest Element: ", find_largest(y))
-print("\tSmallest Element: ", find_smallest(y))
-print("\tPrime Numbers:", end = '')
-primeinTree(y)
+
+
+
+
 
 
 
